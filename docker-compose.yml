@@ -1,0 +1,29 @@
+services:
+  demo.todos.webapi:
+    container_name: demo_todos_webapi
+    image: ${DOCKER_REGISTRY-}demotodoswebapi
+    build:
+      context: ./src/Services/Todos
+      dockerfile: Demo.Todos.WebApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+  demo.todos.database:
+    container_name: demo_todos_database
+    image: postgres:13
+
+    environment:
+      POSTGRES_DB: DBSTodos
+      POSTGRES_USER: db@user
+      POSTGRES_PASSWORD: db@password
+    ports:
+      - "5432"
+    restart: unless-stopped

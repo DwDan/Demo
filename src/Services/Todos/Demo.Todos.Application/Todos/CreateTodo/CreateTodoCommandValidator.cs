@@ -6,6 +6,6 @@ public class CreateTodoCommandValidator : AbstractValidator<CreateTodoCommand>
 {
     public CreateTodoCommandValidator()
     {
-        RuleFor(todo => todo.Name).NotEmpty();
+        RuleFor(todo => todo.Title).NotEmpty();
     }
 }

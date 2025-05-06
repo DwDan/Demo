@@ -7,6 +7,6 @@ public class UpdateTodoCommandValidator : AbstractValidator<UpdateTodoCommand>
     public UpdateTodoCommandValidator()
     {
         RuleFor(todo => todo.Id).NotEmpty();
-        RuleFor(todo => todo.Name).NotEmpty();
+        RuleFor(todo => todo.Title).NotEmpty();
     }
 }

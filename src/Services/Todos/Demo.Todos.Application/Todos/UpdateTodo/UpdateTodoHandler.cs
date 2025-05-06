@@ -25,9 +25,9 @@ public class UpdateTodoHandler : IRequestHandler<UpdateTodoCommand, UpdateTodoRe
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var existingUser = await _todoRepository.GetByAsync((todo)=> todo.Name == command.Name && todo.Id != command.Id, cancellationToken);
+        var existingUser = await _todoRepository.GetByAsync((todo)=> todo.Title == command.Title && todo.Id != command.Id, cancellationToken);
         if (existingUser != null)
-            throw new InvalidOperationException($"Todo with name {command.Name} already exists");
+            throw new InvalidOperationException($"Todo with name {command.Title} already exists");
 
         var todo = _mapper.Map<Todo>(command);
 

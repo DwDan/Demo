@@ -1,0 +1,10 @@
+﻿# Build outputs
+/bin/
+/obj/
+
+# Visual Studio
+.vs/
+
+# Ignorar todos os bin/Debug e obj de subprojetos
+**/bin/Debug/
+**/obj/

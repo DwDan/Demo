@@ -8,3 +8,4 @@
 # Ignorar todos os bin/Debug e obj de subprojetos
 **/bin/Debug/
 **/obj/
+/src/Tests/**/bin/Release/

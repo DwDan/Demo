@@ -1,0 +1,28 @@
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER app
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["services/Demo.Todos.WebApi/Demo.Todos.WebApi.csproj", "services/Demo.Todos.WebApi/"]
+COPY ["services/Demo.Todos.IoC/Demo.Todos.IoC.csproj", "services/Demo.Todos.IoC/"]
+COPY ["services/Demo.Todos.Domain/Demo.Todos.Domain.csproj", "services/Demo.Todos.Domain/"]
+COPY ["services/Demo.Todos.Common/Demo.Todos.Common.csproj", "services/Demo.Todos.Common/"]
+COPY ["services/Demo.Todos.Application/Demo.Todos.Application.csproj", "services/Demo.Todos.Application/"]
+COPY ["services/Demo.Todos.Infrastructure/Demo.Todos.Infrastructure.csproj", "services/Demo.Todos.Infrastructure/"]
+RUN dotnet restore "services/Demo.Todos.WebApi/Demo.Todos.WebApi.csproj"
+COPY . .
+WORKDIR "services/Demo.Todos.WebApi"
+RUN dotnet build "Demo.Todos.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./Demo.Todos.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Demo.Todos.WebApi.dll"]

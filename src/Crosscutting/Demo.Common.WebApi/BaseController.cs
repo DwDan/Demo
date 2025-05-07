@@ -1,7 +1,6 @@
-﻿using Demo.Common.WebApi;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Common;
+namespace Demo.Common.WebApi.Common;
 
 [Route("api/[controller]")]
 [ApiController]

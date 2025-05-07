@@ -1,6 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.WebApi.Common;
-using AutoMapper;
+﻿using AutoMapper;
 using Demo.Common.WebApi;
+using Demo.Common.WebApi.Common;
 using Demo.Todos.Application.Todos.CreateTodo;
 using Demo.Todos.Application.Todos.DeleteTodo;
 using Demo.Todos.Application.Todos.GetTodo;

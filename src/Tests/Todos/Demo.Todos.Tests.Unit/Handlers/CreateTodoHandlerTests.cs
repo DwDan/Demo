@@ -12,14 +12,16 @@ namespace Demo.Todos.Tests.Unit.Handlers;
 public class CreateTodoHandlerTests
 {
     private readonly ITodoRepository _todoRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly CreateTodoHandler _handler;
 
     public CreateTodoHandlerTests()
     {
         _todoRepository = Substitute.For<ITodoRepository>();
+        _unitOfWork = Substitute.For<IUnitOfWork>();
         _mapper = Substitute.For<IMapper>();
-        _handler = new CreateTodoHandler(_todoRepository, _mapper);
+        _handler = new CreateTodoHandler(_unitOfWork, _todoRepository, _mapper);
     }
 
     [Fact(DisplayName = "Given valid todo data When creating todo Then returns success response")]
@@ -40,7 +42,9 @@ public class CreateTodoHandlerTests
         // Then
         createTodoResult.Should().NotBeNull();
         createTodoResult.Id.Should().Be(todo.Id);
+
         await _todoRepository.Received(1).CreateAsync(todo, Arg.Any<CancellationToken>());
+        await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
     }
 
     [Fact(DisplayName = "Given invalid todo data When creating todo Then throws validation exception")]
@@ -72,5 +76,6 @@ public class CreateTodoHandlerTests
         // Then
         _mapper.Received(1).Map<Todo>(command);
         await _todoRepository.Received(1).CreateAsync(todo, Arg.Any<CancellationToken>());
+        await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
     }
 }

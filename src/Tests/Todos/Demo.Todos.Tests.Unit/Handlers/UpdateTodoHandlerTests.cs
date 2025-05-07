@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq.Expressions;
+using AutoMapper;
 using Demo.Todos.Application.Todos.UpdateTodo;
 using Demo.Todos.Domain.Entities;
 using Demo.Todos.Domain.Repositories;
@@ -12,14 +13,16 @@ namespace Demo.Todos.Tests.Unit.Handlers;
 public class UpdateTodoHandlerTests
 {
     private readonly ITodoRepository _todoRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly UpdateTodoHandler _handler;
 
     public UpdateTodoHandlerTests()
     {
         _todoRepository = Substitute.For<ITodoRepository>();
+        _unitOfWork = Substitute.For<IUnitOfWork>();
         _mapper = Substitute.For<IMapper>();
-        _handler = new UpdateTodoHandler(_todoRepository, _mapper);
+        _handler = new UpdateTodoHandler(_unitOfWork, _todoRepository, _mapper);
     }
 
     [Fact(DisplayName = "Given valid todo data When updating todo Then returns success response")]
@@ -31,13 +34,15 @@ public class UpdateTodoHandlerTests
 
         _mapper.Map<Todo>(command).Returns(todo);
         _mapper.Map<UpdateTodoResult>(todo).Returns(result);
-        _todoRepository.UpdateAsync(Arg.Any<Todo>(), Arg.Any<CancellationToken>()).Returns(todo);
+        _todoRepository.GetByAsync(Arg.Any<Expression<Func<Todo, bool>>>(), Arg.Any<CancellationToken>()).Returns((Todo?)null);
+        _todoRepository.UpdateAsync(todo, Arg.Any<CancellationToken>()).Returns(todo);
 
         var updateTodoResult = await _handler.Handle(command, CancellationToken.None);
 
         updateTodoResult.Should().NotBeNull();
         updateTodoResult.Id.Should().Be(todo.Id);
-        await _todoRepository.Received(1).UpdateAsync(Arg.Any<Todo>(), Arg.Any<CancellationToken>());
+        await _todoRepository.Received(1).UpdateAsync(todo, Arg.Any<CancellationToken>());
+        await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
     }
 
     [Fact(DisplayName = "Given invalid todo data When updating todo Then throws validation exception")]
@@ -57,10 +62,12 @@ public class UpdateTodoHandlerTests
         var todo = UpdateTodoHandlerTestData.GenerateValidCommand(command);
 
         _mapper.Map<Todo>(command).Returns(todo);
-        _todoRepository.UpdateAsync(Arg.Any<Todo>(), Arg.Any<CancellationToken>()).Returns(todo);
+        _todoRepository.GetByAsync(Arg.Any<Expression<Func<Todo, bool>>>(), Arg.Any<CancellationToken>()).Returns((Todo?)null);
+        _todoRepository.UpdateAsync(todo, Arg.Any<CancellationToken>()).Returns(todo);
 
         await _handler.Handle(command, CancellationToken.None);
 
         _mapper.Received(1).Map<Todo>(command);
+        await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
     }
 }

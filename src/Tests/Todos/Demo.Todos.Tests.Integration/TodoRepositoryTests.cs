@@ -7,14 +7,16 @@ namespace Demo.Todos.Tests.Functional;
 
 public class TodoRepositoryTests : BaseRepositoryTests
 {
-    public TodoRepositoryTests(IntegrationDatabaseFixture fixture) : base(fixture){}
+    public TodoRepositoryTests(IntegrationDatabaseFixture fixture) : base(fixture) { }
 
     [Fact(DisplayName = "Given a new todo When adding to repository Then should persist in database")]
     public async Task AddTodo_ShouldPersistInDatabase()
     {
         var repository = new TodoRepository(DbContext);
         var todo = TodoHandlerTestData.GenerateValidEntity();
+
         await repository.CreateAsync(todo);
+        await DbContext.SaveChangesAsync();
 
         var result = await repository.GetByIdAsync(todo.Id);
 
@@ -27,10 +29,13 @@ public class TodoRepositoryTests : BaseRepositoryTests
     {
         var repository = new TodoRepository(DbContext);
         var todo = TodoHandlerTestData.GenerateValidEntity();
+
         await repository.CreateAsync(todo);
+        await DbContext.SaveChangesAsync();
 
         todo.Title = "Updated Todo";
         await repository.UpdateAsync(todo);
+        await DbContext.SaveChangesAsync();
 
         var result = await repository.GetByIdAsync(todo.Id);
 
@@ -43,7 +48,9 @@ public class TodoRepositoryTests : BaseRepositoryTests
     {
         var repository = new TodoRepository(DbContext);
         var todo = TodoHandlerTestData.GenerateValidEntity();
+
         await repository.CreateAsync(todo);
+        await DbContext.SaveChangesAsync();
 
         var result = await repository.GetByIdAsync(todo.Id);
 
@@ -56,7 +63,9 @@ public class TodoRepositoryTests : BaseRepositoryTests
     {
         var repository = new TodoRepository(DbContext);
         var todo = TodoHandlerTestData.GenerateValidEntity();
+
         await repository.CreateAsync(todo);
+        await DbContext.SaveChangesAsync();
 
         var result = await repository.GetByAsync(b => b.Title == todo.Title);
 
@@ -70,8 +79,10 @@ public class TodoRepositoryTests : BaseRepositoryTests
         var repository = new TodoRepository(DbContext);
         var todo1 = TodoHandlerTestData.GenerateValidEntity();
         var todo2 = TodoHandlerTestData.GenerateValidEntity();
+
         await repository.CreateAsync(todo1);
         await repository.CreateAsync(todo2);
+        await DbContext.SaveChangesAsync();
 
         var request = new ApiQueryRequestDomain { Page = 1, Size = 10 };
         var result = await repository.GetAllTodosAsync(request);
@@ -86,9 +97,13 @@ public class TodoRepositoryTests : BaseRepositoryTests
     {
         var repository = new TodoRepository(DbContext);
         var todo = TodoHandlerTestData.GenerateValidEntity();
+
         await repository.CreateAsync(todo);
+        await DbContext.SaveChangesAsync();
 
         var deleted = await repository.DeleteAsync(todo.Id);
+        await DbContext.SaveChangesAsync();
+
         var result = await repository.GetByIdAsync(todo.Id);
 
         deleted.Should().BeTrue();

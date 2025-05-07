@@ -33,7 +33,6 @@ public class TodoRepository : ITodoRepository
     public async Task<Todo> CreateAsync(Todo todo, CancellationToken cancellationToken = default)
     {
         await _context.Todos.AddAsync(todo, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
         return todo;
     }
 
@@ -46,8 +45,7 @@ public class TodoRepository : ITodoRepository
     public async Task<Todo> UpdateAsync(Todo todo, CancellationToken cancellationToken = default)
     {
         _context.Todos.Update(todo);
-        await _context.SaveChangesAsync(cancellationToken);
-        return todo;
+        return await Task.FromResult(todo);
     }
 
     /// <summary>
@@ -116,7 +114,6 @@ public class TodoRepository : ITodoRepository
             return false;
 
         _context.Todos.Remove(todo);
-        await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
 }

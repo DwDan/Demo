@@ -8,11 +8,13 @@ namespace Demo.Todos.Application.Todos.UpdateTodo;
 
 public class UpdateTodoHandler : IRequestHandler<UpdateTodoCommand, UpdateTodoResult>
 {
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ITodoRepository _todoRepository;
     private readonly IMapper _mapper;
 
-    public UpdateTodoHandler(ITodoRepository todoRepository, IMapper mapper)
+    public UpdateTodoHandler(IUnitOfWork unitOfWork, ITodoRepository todoRepository, IMapper mapper)
     {
+        _unitOfWork = unitOfWork;
         _todoRepository = todoRepository;
         _mapper = mapper;
     }
@@ -25,14 +27,18 @@ public class UpdateTodoHandler : IRequestHandler<UpdateTodoCommand, UpdateTodoRe
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var existingUser = await _todoRepository.GetByAsync((todo)=> todo.Title == command.Title && todo.Id != command.Id, cancellationToken);
+        var existingUser = await _todoRepository.GetByAsync(
+            todo => todo.Title == command.Title && todo.Id != command.Id,
+            cancellationToken
+        );
+
         if (existingUser != null)
             throw new InvalidOperationException($"Todo with name {command.Title} already exists");
 
         var todo = _mapper.Map<Todo>(command);
+        await _todoRepository.UpdateAsync(todo, cancellationToken);
+        await _unitOfWork.CommitAsync(cancellationToken);
 
-        var createdUser = await _todoRepository.UpdateAsync(todo, cancellationToken);
-        var result = _mapper.Map<UpdateTodoResult>(createdUser);
-        return result;
+        return _mapper.Map<UpdateTodoResult>(todo);
     }
 }

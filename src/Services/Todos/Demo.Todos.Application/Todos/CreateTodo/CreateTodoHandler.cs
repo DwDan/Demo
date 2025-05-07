@@ -8,11 +8,13 @@ namespace Demo.Todos.Application.Todos.CreateTodo;
 
 public class CreateTodoHandler : IRequestHandler<CreateTodoCommand, CreateTodoResult>
 {
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ITodoRepository _todoRepository;
     private readonly IMapper _mapper;
 
-    public CreateTodoHandler(ITodoRepository todoRepository, IMapper mapper)
+    public CreateTodoHandler(IUnitOfWork unitOfWork, ITodoRepository todoRepository, IMapper mapper)
     {
+        _unitOfWork = unitOfWork;
         _todoRepository = todoRepository;
         _mapper = mapper;
     }
@@ -26,9 +28,9 @@ public class CreateTodoHandler : IRequestHandler<CreateTodoCommand, CreateTodoRe
             throw new ValidationException(validationResult.Errors);
 
         var todo = _mapper.Map<Todo>(command);
+        await _todoRepository.CreateAsync(todo, cancellationToken);
+        await _unitOfWork.CommitAsync(cancellationToken);
 
-        var createdUser = await _todoRepository.CreateAsync(todo, cancellationToken);
-        var result = _mapper.Map<CreateTodoResult>(createdUser);
-        return result;
+        return _mapper.Map<CreateTodoResult>(todo);
     }
 }

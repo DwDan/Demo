@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Ambev.DeveloperEvaluation.WebApi.Common;
+using AutoMapper;
 using Demo.Common.WebApi;
 using Demo.Todos.Application.Todos.CreateTodo;
 using Demo.Todos.Application.Todos.DeleteTodo;
@@ -20,7 +21,7 @@ namespace Demo.Todos.WebApi.Features.Todos
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class TodosController : ControllerBase
+    public class TodosController : BaseController
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;

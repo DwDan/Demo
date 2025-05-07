@@ -1,4 +1,5 @@
 using Demo.Common.Application.Validation;
+using Demo.Common.WebApi;
 using Demo.Todos.Application;
 using Demo.Todos.Infrastructure;
 using Demo.Todos.IoC;
@@ -68,6 +69,7 @@ public partial class Program
         });
 
         var app = builder.Build();
+        app.UseMiddleware<ValidationExceptionMiddleware>();
 
         if (app.Environment.IsDevelopment())
         {

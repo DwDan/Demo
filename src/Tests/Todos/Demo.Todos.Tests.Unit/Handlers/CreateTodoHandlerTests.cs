@@ -4,7 +4,6 @@ using Demo.Todos.Domain.Entities;
 using Demo.Todos.Domain.Repositories;
 using Demo.Todos.Tests.Faker;
 using FluentAssertions;
-using FluentValidation;
 using NSubstitute;
 
 namespace Demo.Todos.Tests.Unit.Handlers;
@@ -45,19 +44,6 @@ public class CreateTodoHandlerTests
 
         await _todoRepository.Received(1).CreateAsync(todo, Arg.Any<CancellationToken>());
         await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
-    }
-
-    [Fact(DisplayName = "Given invalid todo data When creating todo Then throws validation exception")]
-    public async Task Handle_InvalidRequest_ThrowsValidationException()
-    {
-        // Given
-        var command = new CreateTodoCommand(); // inválido por padrão
-
-        // When
-        var act = () => _handler.Handle(command, CancellationToken.None);
-
-        // Then
-        await act.Should().ThrowAsync<ValidationException>();
     }
 
     [Fact(DisplayName = "Given valid command When handling Then maps command to todo entity")]

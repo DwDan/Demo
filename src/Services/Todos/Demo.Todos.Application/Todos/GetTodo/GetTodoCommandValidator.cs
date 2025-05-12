@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace Demo.Todos.Application.Todos.GetTodo;
 
-public class GetTodoValidator : AbstractValidator<GetTodoCommand>
+public class GetTodoCommandValidator : AbstractValidator<GetTodoCommand>
 {
-    public GetTodoValidator()
+    public GetTodoCommandValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()

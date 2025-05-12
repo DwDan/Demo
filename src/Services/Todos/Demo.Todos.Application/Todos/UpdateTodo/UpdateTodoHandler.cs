@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Demo.Todos.Domain.Entities;
 using Demo.Todos.Domain.Repositories;
-using FluentValidation;
 using MediatR;
 
 namespace Demo.Todos.Application.Todos.UpdateTodo;
@@ -21,12 +20,6 @@ public class UpdateTodoHandler : IRequestHandler<UpdateTodoCommand, UpdateTodoRe
 
     public async Task<UpdateTodoResult> Handle(UpdateTodoCommand command, CancellationToken cancellationToken)
     {
-        var validator = new UpdateTodoCommandValidator();
-        var validationResult = await validator.ValidateAsync(command, cancellationToken);
-
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
-
         var existingUser = await _todoRepository.GetByAsync(
             todo => todo.Title == command.Title && todo.Id != command.Id,
             cancellationToken

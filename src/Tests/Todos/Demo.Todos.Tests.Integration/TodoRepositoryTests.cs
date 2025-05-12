@@ -33,7 +33,7 @@ public class TodoRepositoryTests : BaseRepositoryTests
         await repository.CreateAsync(todo);
         await DbContext.SaveChangesAsync();
 
-        todo.Title = "Updated Todo";
+        todo.SetTitle("Updated Todo");
         await repository.UpdateAsync(todo);
         await DbContext.SaveChangesAsync();
 

@@ -4,7 +4,6 @@ using Demo.Todos.Application.Todos.ListTodos;
 using Demo.Todos.Domain.Repositories;
 using Demo.Todos.Tests.Faker;
 using FluentAssertions;
-using FluentValidation;
 using NSubstitute;
 
 namespace Demo.Todos.Tests.Unit.Handlers;
@@ -40,20 +39,6 @@ public class ListTodosHandlerTests
         // Then
         result.Should().NotBeNull();
         await _todoRepository.Received(1).GetAllTodosAsync(apiQuery, Arg.Any<CancellationToken>());
-    }
-
-    [Fact(DisplayName = "Given invalid query When listing todos Then throws validation exception")]
-    public async Task Handle_InvalidRequest_ThrowsValidationException()
-    {
-        // Given
-        var command = new ListTodosCommand();
-        command.Size = 0;
-
-        // When
-        var act = () => _handler.Handle(command, CancellationToken.None);
-
-        // Then
-        await act.Should().ThrowAsync<ValidationException>();
     }
 
     [Fact(DisplayName = "Given valid query When handling Then maps command to API query")]

@@ -1,13 +1,12 @@
-﻿using Demo.Common.WebApi;
 using Demo.Todos.Domain.Entities;
 using Demo.Todos.Domain.Validation;
 using FluentValidation;
 
-namespace Demo.Todos.WebApi.Features.Todos.ListTodos;
+namespace Demo.Todos.Application.Todos.ListTodos;
 
-public class ListTodosRequestValidator : AbstractValidator<ApiQueryRequestPresentation>
+public class ListTodosCommandValidator : AbstractValidator<ListTodosCommand>
 {
-    public ListTodosRequestValidator()
+    public ListTodosCommandValidator()
     {
         RuleFor(x => x.Order).SetValidator(new OrderValidator<Todo>());
         RuleFor(x => x.Page).GreaterThan(0).WithMessage("Page must be greater than 0");

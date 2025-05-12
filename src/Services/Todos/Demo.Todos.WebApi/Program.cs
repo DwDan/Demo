@@ -1,9 +1,6 @@
-using Demo.Common.Application.Validation;
 using Demo.Common.WebApi;
-using Demo.Todos.Application;
 using Demo.Todos.Infrastructure;
 using Demo.Todos.IoC;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -31,45 +28,13 @@ public partial class Program
 
     private static WebApplication CreateWebApplication(string[] args)
     {
-        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
-        builder.Services.AddControllers();
-        builder.Services.AddEndpointsApiExplorer();
-
-        builder.Services.AddSwaggerGen();
-
-        builder.Services.AddDbContext<DefaultContext>(options =>
-            options.UseNpgsql(
-                builder.Configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly("Demo.Todos.Infrastructure")
-            )
-        );
+        var builder = WebApplication.CreateBuilder(args);
 
         builder.RegisterDependencies();
 
-        builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(ApplicationLayer).Assembly);
-
-        builder.Services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssemblies(
-                typeof(ApplicationLayer).Assembly,
-                typeof(Program).Assembly
-            );
-        });
-
-        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("AllowFrontend",
-                policy => policy.WithOrigins("http://localhost:4200")
-                                .AllowAnyHeader()
-                                .AllowAnyMethod()
-                                .AllowCredentials());
-        });
+        builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
         var app = builder.Build();
-        app.UseMiddleware<ValidationExceptionMiddleware>();
 
         if (app.Environment.IsDevelopment())
         {
@@ -77,10 +42,9 @@ public partial class Program
             app.UseSwaggerUI();
         }
 
+        app.UseMiddleware<ValidationExceptionMiddleware>();
         app.UseHttpsRedirection();
-
         app.UseCors("AllowFrontend");
-
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();

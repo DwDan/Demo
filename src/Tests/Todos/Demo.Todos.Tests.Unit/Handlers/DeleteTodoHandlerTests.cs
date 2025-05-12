@@ -3,7 +3,6 @@ using Demo.Todos.Application.Todos.DeleteTodo;
 using Demo.Todos.Domain.Repositories;
 using Demo.Todos.Tests.Faker;
 using FluentAssertions;
-using FluentValidation;
 using NSubstitute;
 
 namespace Demo.Todos.Tests.Unit.Handlers;
@@ -54,14 +53,5 @@ public class DeleteTodoHandlerTests
 
         await _todoRepository.Received(1).DeleteAsync(command.Id, CancellationToken.None);
         await _unitOfWork.DidNotReceive().CommitAsync(Arg.Any<CancellationToken>());
-    }
-
-    [Fact(DisplayName = "Should throw ValidationException when id is invalid")]
-    public async Task DeleteTodoHandler_Throw_ValidationException_WhenIdIsInvalid()
-    {
-        var command = new DeleteTodoCommand(0);
-
-        var exception = await Assert.ThrowsAsync<ValidationException>(() => _handler.Handle(command, CancellationToken.None));
-        exception.Message.Should().Contain("Id");
     }
 }

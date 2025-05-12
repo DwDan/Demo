@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Demo.Todos.Domain.Entities;
 using Demo.Todos.Domain.Repositories;
-using FluentValidation;
 using MediatR;
 
 namespace Demo.Todos.Application.Todos.CreateTodo;
@@ -21,12 +20,6 @@ public class CreateTodoHandler : IRequestHandler<CreateTodoCommand, CreateTodoRe
 
     public async Task<CreateTodoResult> Handle(CreateTodoCommand command, CancellationToken cancellationToken)
     {
-        var validator = new CreateTodoCommandValidator();
-        var validationResult = await validator.ValidateAsync(command, cancellationToken);
-
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
-
         var todo = _mapper.Map<Todo>(command);
         await _todoRepository.CreateAsync(todo, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);

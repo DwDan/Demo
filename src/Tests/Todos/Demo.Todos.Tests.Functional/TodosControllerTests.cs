@@ -15,11 +15,16 @@ public class TodosControllerTests : BaseControllerTests
 {
     public TodosControllerTests(FunctionalDatabaseFixture fixture) : base(fixture) { }
 
-    [Fact(DisplayName = "POST /api/todos - Deve criar uma nova todo com sucesso")]
+    [Fact(DisplayName = "POST /api/todos - Should create a new todo successfully")]
     public async Task CreateTodo_ShouldReturn_CreatedStatus()
     {
         var newTodo = TodoHandlerTestData.GenerateValidEntity();
-        var request = new { Title = newTodo.Title };
+        var request = new
+        {
+            Title = newTodo.Title,
+            Description = newTodo.Description,
+            DueDate = newTodo.DueDate
+        };
 
         var response = await _client.PostAsJsonAsync("/api/todos", request);
 
@@ -29,11 +34,16 @@ public class TodosControllerTests : BaseControllerTests
         responseData.Data.Id.Should().BeGreaterThan(0);
     }
 
-    [Fact(DisplayName = "GET /api/todos - Deve retornar a lista de todos")]
+    [Fact(DisplayName = "GET /api/todos - Should return the list of todos")]
     public async Task ListTodos_ShouldReturn_TodosList()
     {
         var newTodo = TodoHandlerTestData.GenerateValidEntity();
-        var createResponse = await _client.PostAsJsonAsync("/api/todos", new { Title = newTodo.Title });
+        await _client.PostAsJsonAsync("/api/todos", new
+        {
+            Title = newTodo.Title,
+            Description = newTodo.Description,
+            DueDate = newTodo.DueDate
+        });
 
         var response = await _client.GetAsync("/api/todos");
 
@@ -43,11 +53,16 @@ public class TodosControllerTests : BaseControllerTests
         responseData.Data.Data.Should().HaveCountGreaterThan(0);
     }
 
-    [Fact(DisplayName = "GET /api/todos/{id} - Deve retornar a todo correta")]
+    [Fact(DisplayName = "GET /api/todos/{id} - Should return the correct todo")]
     public async Task GetTodo_ShouldReturn_CorrectTodo()
     {
         var newTodo = TodoHandlerTestData.GenerateValidEntity();
-        var createResponse = await _client.PostAsJsonAsync("/api/todos", new { Title = newTodo.Title });
+        var createResponse = await _client.PostAsJsonAsync("/api/todos", new
+        {
+            Title = newTodo.Title,
+            Description = newTodo.Description,
+            DueDate = newTodo.DueDate
+        });
 
         var createData = await createResponse.Content.ReadFromJsonAsync<ApiResponseWithData<CreateTodoResponse>>();
         var createdTodoId = createData.Data.Id;
@@ -61,16 +76,27 @@ public class TodosControllerTests : BaseControllerTests
         responseData.Data.Title.Should().Be(newTodo.Title);
     }
 
-    [Fact(DisplayName = "PUT /api/todos/{id} - Deve atualizar a todo corretamente")]
+    [Fact(DisplayName = "PUT /api/todos/{id} - Should update the todo correctly")]
     public async Task UpdateTodo_ShouldUpdate_TodoSuccessfully()
     {
         var newTodo = TodoHandlerTestData.GenerateValidEntity();
-        var createResponse = await _client.PostAsJsonAsync("/api/todos", new { Title = newTodo.Title });
+        var createResponse = await _client.PostAsJsonAsync("/api/todos", new
+        {
+            Title = newTodo.Title,
+            Description = newTodo.Description,
+            DueDate = newTodo.DueDate
+        });
 
         var createData = await createResponse.Content.ReadFromJsonAsync<ApiResponseWithData<CreateTodoResponse>>();
         var createdTodoId = createData.Data.Id;
 
-        var updatedRequest = new { Title = "Updated Todo Title" };
+        var updatedRequest = new
+        {
+            Title = "Updated Todo Title",
+            Description = "Updated Description",
+            DueDate = DateTime.UtcNow.AddDays(2)
+        };
+
         var updateResponse = await _client.PutAsJsonAsync($"/api/todos/{createdTodoId}", updatedRequest);
 
         updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -80,11 +106,16 @@ public class TodosControllerTests : BaseControllerTests
         updateData.Data.Title.Should().Be("Updated Todo Title");
     }
 
-    [Fact(DisplayName = "DELETE /api/todos/{id} - Deve remover a todo corretamente")]
+    [Fact(DisplayName = "DELETE /api/todos/{id} - Should delete the todo correctly")]
     public async Task DeleteTodo_ShouldDelete_TodoSuccessfully()
     {
         var newTodo = TodoHandlerTestData.GenerateValidEntity();
-        var createResponse = await _client.PostAsJsonAsync("/api/todos", new { Title = newTodo.Title });
+        var createResponse = await _client.PostAsJsonAsync("/api/todos", new
+        {
+            Title = newTodo.Title,
+            Description = newTodo.Description,
+            DueDate = newTodo.DueDate
+        });
 
         var createData = await createResponse.Content.ReadFromJsonAsync<ApiResponseWithData<CreateTodoResponse>>();
         var createdTodoId = createData.Data.Id;

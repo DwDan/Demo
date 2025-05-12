@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace Demo.Todos.Application.Todos.DeleteTodo;
 
-public class DeleteTodoValidator : AbstractValidator<DeleteTodoCommand>
+public class DeleteTodoCommandValidator : AbstractValidator<DeleteTodoCommand>
 {
-    public DeleteTodoValidator()
+    public DeleteTodoCommandValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()

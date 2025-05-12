@@ -4,7 +4,6 @@ using Demo.Todos.Domain.Entities;
 using Demo.Todos.Domain.Repositories;
 using Demo.Todos.Tests.Faker;
 using FluentAssertions;
-using FluentValidation;
 using NSubstitute;
 
 namespace Demo.Todos.Tests.Unit.Handlers;
@@ -53,19 +52,5 @@ public class GetTodoHandlerTests
         var exception = await Assert.ThrowsAsync<KeyNotFoundException>(() => _handler.Handle(command, CancellationToken.None));
         exception.Message.Should().Be($"Todo with ID {command.Id} not found");
         await _todoRepository.Received(1).GetByIdAsync(command.Id, Arg.Any<CancellationToken>());
-    }
-
-    [Fact(DisplayName = "Should throw ValidationException when id is invalid")]
-    public async Task GetTodoHandler_Throws_ValidationException_WhenIdIsInvalid()
-    {
-        // Arrange
-        var command = new GetTodoCommand(0); // inválido
-
-        // Act
-        var act = () => _handler.Handle(command, CancellationToken.None);
-
-        // Assert
-        await act.Should().ThrowAsync<ValidationException>()
-            .WithMessage("*Id*required*"); // evita acoplamento ao texto completo
     }
 }

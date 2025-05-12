@@ -11,10 +11,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
+	  <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Demo.Todos.Application\Demo.Todos.Application.csproj" />
 	  <ProjectReference Include="..\Demo.Todos.Domain\Demo.Todos.Domain.csproj" />
 	  <ProjectReference Include="..\Demo.Todos.Infrastructure\Demo.Todos.Infrastructure.csproj" />
 	</ItemGroup>

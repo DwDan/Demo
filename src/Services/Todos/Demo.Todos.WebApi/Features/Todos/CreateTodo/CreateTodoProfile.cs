@@ -8,6 +8,7 @@ public class CreateTodoProfile : Profile
     public CreateTodoProfile()
     {        
         CreateMap<CreateTodoRequest, CreateTodoCommand>();
+
         CreateMap<CreateTodoResult, CreateTodoResponse>();
     }
 }

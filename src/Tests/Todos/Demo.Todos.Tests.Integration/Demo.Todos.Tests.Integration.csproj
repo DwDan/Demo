@@ -16,10 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Demo.Todos.Tests.Faker\Demo.Todos.Tests.Faker.csproj" />
     <ProjectReference Include="..\..\..\Services\Todos\Demo.Todos.Domain\Demo.Todos.Domain.csproj" />
     <ProjectReference Include="..\..\..\Services\Todos\Demo.Todos.Infrastructure\Demo.Todos.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Demo.Common.Tests.Integration\Demo.Common.Tests.Integration.csproj" />
+    <ProjectReference Include="..\Demo.Todos.Tests.Faker\Demo.Todos.Tests.Faker.csproj" />
   </ItemGroup>
 
   <ItemGroup>

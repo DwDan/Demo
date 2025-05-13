@@ -1,6 +1,6 @@
 ﻿using Demo.Todos.Domain.Enums;
 
-namespace Demo.Todos.Application.Todos.Common
+namespace Demo.Todos.Application.Todos.ListTodos
 {
     public class TodoApplication
     {

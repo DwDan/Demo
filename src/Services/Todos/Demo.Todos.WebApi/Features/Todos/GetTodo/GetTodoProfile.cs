@@ -7,7 +7,6 @@ public class GetTodoProfile : Profile
 {
     public GetTodoProfile()
     {
-        CreateMap<GetTodoRequest, GetTodoCommand>();
         CreateMap<GetTodoResult, GetTodoResponse>();
     }
 }

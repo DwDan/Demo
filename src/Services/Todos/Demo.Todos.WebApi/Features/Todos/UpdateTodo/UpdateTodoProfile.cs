@@ -8,6 +8,7 @@ public class UpdateTodoProfile : Profile
     public UpdateTodoProfile()
     {
         CreateMap<UpdateTodoRequest, UpdateTodoCommand>();
+
         CreateMap<UpdateTodoResult, UpdateTodoResponse>();
     }
 }

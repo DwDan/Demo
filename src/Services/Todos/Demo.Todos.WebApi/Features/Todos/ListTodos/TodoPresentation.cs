@@ -1,6 +1,6 @@
 ﻿using Demo.Todos.Domain.Enums;
 
-namespace Demo.Todos.WebApi.Features.Todos.Common
+namespace Demo.Todos.WebApi.Features.Todos.ListTodos
 {
     public class TodoPresentation
     {

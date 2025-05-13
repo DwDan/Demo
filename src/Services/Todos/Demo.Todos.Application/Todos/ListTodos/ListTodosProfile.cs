@@ -1,6 +1,5 @@
 using AutoMapper;
 using Demo.Common.Domain;
-using Demo.Todos.Application.Todos.Common;
 using Demo.Todos.Domain.Entities;
 
 namespace Demo.Todos.Application.Todos.ListTodos;

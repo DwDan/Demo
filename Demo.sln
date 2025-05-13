@@ -45,7 +45,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Common.Tests.Functiona
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Common.Tests.Integration", "src\Tests\Demo.Common.Tests.Integration\Demo.Common.Tests.Integration.csproj", "{FC2A74DE-D32C-492B-80D7-4D03DA57226E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Todos.Tests.Faker", "..\Demo.Todos.Tests.Faker\Demo.Todos.Tests.Faker.csproj", "{0969E884-42E7-4EB8-BE1A-1453E0D22C5A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Todos.Tests.Faker", "src\Tests\Todos\Demo.Todos.Tests.Faker\Demo.Todos.Tests.Faker.csproj", "{7DEBA4A8-C4F9-4F95-9D79-2BEBD019B5C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,10 +113,10 @@ Global
 		{FC2A74DE-D32C-492B-80D7-4D03DA57226E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC2A74DE-D32C-492B-80D7-4D03DA57226E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC2A74DE-D32C-492B-80D7-4D03DA57226E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0969E884-42E7-4EB8-BE1A-1453E0D22C5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0969E884-42E7-4EB8-BE1A-1453E0D22C5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0969E884-42E7-4EB8-BE1A-1453E0D22C5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0969E884-42E7-4EB8-BE1A-1453E0D22C5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DEBA4A8-C4F9-4F95-9D79-2BEBD019B5C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DEBA4A8-C4F9-4F95-9D79-2BEBD019B5C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DEBA4A8-C4F9-4F95-9D79-2BEBD019B5C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DEBA4A8-C4F9-4F95-9D79-2BEBD019B5C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,6 +141,6 @@ Global
 		{88FBFB31-AE46-4E75-86D1-52718DB96E05} = {DAC9C0E9-55C7-4937-87BB-6A9D2011C76F}
 		{3D54C0C4-BE76-401D-9742-F79F42FE9E05} = {6DFDBFEE-FAD5-4C3E-9CB2-F982D336D0DF}
 		{FC2A74DE-D32C-492B-80D7-4D03DA57226E} = {6DFDBFEE-FAD5-4C3E-9CB2-F982D336D0DF}
-		{0969E884-42E7-4EB8-BE1A-1453E0D22C5A} = {DAC9C0E9-55C7-4937-87BB-6A9D2011C76F}
+		{7DEBA4A8-C4F9-4F95-9D79-2BEBD019B5C2} = {DAC9C0E9-55C7-4937-87BB-6A9D2011C76F}
 	EndGlobalSection
 EndGlobal

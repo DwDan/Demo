@@ -7,7 +7,6 @@ using Demo.Todos.Application.Todos.GetTodo;
 using Demo.Todos.Application.Todos.ListTodos;
 using Demo.Todos.Application.Todos.UpdateTodo;
 using Demo.Todos.WebApi.Features.Todos.CreateTodo;
-using Demo.Todos.WebApi.Features.Todos.DeleteTodo;
 using Demo.Todos.WebApi.Features.Todos.GetTodo;
 using Demo.Todos.WebApi.Features.Todos.ListTodos;
 using Demo.Todos.WebApi.Features.Todos.UpdateTodo;
@@ -73,8 +72,7 @@ namespace Demo.Todos.WebApi.Features.Todos
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetTodo([FromRoute] int id, CancellationToken cancellationToken)
         {
-            var request = new GetTodoRequest { Id = id };
-            var command = _mapper.Map<GetTodoCommand>(request.Id);
+            var command = _mapper.Map<GetTodoCommand>(id);
             var response = await _mediator.Send(command, cancellationToken);
 
             return Ok(_mapper.Map<GetTodoResponse>(response));
@@ -89,8 +87,9 @@ namespace Demo.Todos.WebApi.Features.Todos
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateTodo([FromRoute] int id, [FromBody] UpdateTodoRequest request, CancellationToken cancellationToken)
         {
-            request.Id = id;
             var command = _mapper.Map<UpdateTodoCommand>(request);
+            command.Id = id;
+
             var response = await _mediator.Send(command, cancellationToken);
 
             return Ok(_mapper.Map<UpdateTodoResponse>(response));
@@ -105,8 +104,7 @@ namespace Demo.Todos.WebApi.Features.Todos
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteTodo([FromRoute] int id, CancellationToken cancellationToken)
         {
-            var request = new DeleteTodoRequest { Id = id };
-            var command = _mapper.Map<DeleteTodoCommand>(request.Id);
+            var command = _mapper.Map<DeleteTodoCommand>(id);
             await _mediator.Send(command, cancellationToken);
 
             return Ok(true);
